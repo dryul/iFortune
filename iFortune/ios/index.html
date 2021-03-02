@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>Лабораторная работа №1</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+	<header>
+		<h1 class="main-head">«Многооконное приложение под iOS»</h1>
+	</header>
+	<img src="images/cat3.png" alt="catic" class="cat3">
+	<img src="images/cat1.png" alt="catic" class="cat1">
+	<section class="goal">
+		<div class="text-goal">
+			<b>Цель.</b> Создание многооконного приложения под iOS и его компиляция с использованием виртуального и/или реального устройств. Использование элементов управления и обработка событий. Осуществление перехода между окнами с передачей данных. 
+		</div>
+	</section>
+
+	<section class="theory">
+		<h4 class="fo-head">Теоретические сведения</h4>
+		<div class="text-theory">
+			Разработка приложений под iOS возможна только под операционной системой MacOS. Была выбрана ОС MacOS Sierra 10.12.6.
+			<br>
+			<b>MacOS Sierra</b> — операционная система для персональных компьютеров и серверов, разработанная Apple. Это тринадцатая по счёту версия macOS.
+			<br>
+			Общие требования:
+			<ul сlass="trebovania">
+				<li>OS X 10.7.5 или новее</li>
+				<li>2 ГБ памяти</li>
+				<li>8,8 ГБ свободного пространства на диске</li>
+				<li>Для использования некоторых функций требуется Apple ID; требуется соблюдение условий.</li>
+			</ul>
+			<br>
+			Мобильные приложения создаются с использованием родных языков программирования для конкретной операционной системы. Это Kotlin и Java для Android и Swift вместе с Objective-C для iOS. Для выполнения лабораторной работы был выбран язык Swift, так как процесс разработки мобильных приложений на Swift проще по сравнению с Objective-C. Код, написанный на Swift, гораздо удобнее читать. Сам язык требует меньше кода, что также является преимуществом. Swift гораздо более современный язык, адаптирующий современные подходы других языков. Фиксирование багов занимает меньше времени. Он обеспечивает безопасное управление памятью, опцию Playground и многое другое. Swift быстрее по сравнению с Objective-C. Язык постоянно совершенствуется.
+			<br>
+			Для разработки на языке Swift для iOS может быть использована среда разработки Xcode. Xcode — это полноценная IDE, включающая комплект инструментов для разработки, созданная компанией Apple для написания ПО под macOS, iOS, WatchOS и tvOS.
+		</div>
+	</section>
+
+	<section class="work">
+		<h4 class="fo-head">Ход работы</h4>
+		<div class="text-work">
+			<b>ViewController.swift.</b> Файл с описанием первого окна приложения, в котором происходит выбор карты и переход на второе окно приложения. Здесь происходит инициализация переменной id кнопки, обработка нажатий кнопки и передача значений id кнопки в следующее окно.
+		</div>
+		<pre>
+			//
+			// ViewController.swift
+			// iFortune
+			//
+			// Created by MacOS on 01.02.21.
+			// Copyright © 2021 MacOS. All rights reserved.
+			//
+
+			import UIKit
+
+			class ViewController: UIViewController {
+
+			var card: Int = 0 //инициализация переменной id кнопки
+			override func viewDidLoad() {
+			super.viewDidLoad()
+			}
+
+
+			@IBAction func rezult(_ sender: Any) { // инициализация функции нажатия на кнопку «Выбрать карту дня»
+			}
+			override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+			let dest:Result = segue.destination as! Result
+			dest.cardNum = card 
+			} //передача значений id кнопки во второе окно при переключении
+			@IBAction func c0(_ sender: Any) {
+			card = 0
+			} //обработка нажатия кнопки
+			@IBAction func c1(_ sender: Any) {
+			card = 1
+			}
+			@IBAction func c2(_ sender: Any) {
+			card = 2
+			}
+			@IBAction func c3(_ sender: Any) {
+			card = 3
+			}
+			… //аналогично происходит обработка нажатий остальных кнопок
+			}
+		</pre>
+
+		<img src="images/cards.png" alt="cards" class="image-result">
+
+		<div class="text-work">
+			<b>Result.swift.</b> Файл с описанием второго окна. В этом окне происходит отображение карты из перемешанной последовательности по id, выбранным в первом окне
+		</div>
+
+		<pre>
+			//
+			// Result.swift
+			// iFortune
+			//
+			// Created by MacOS on 01.02.21.
+			// Copyright © 2021 MacOS. All rights reserved.
+			//
+
+			import UIKit
+
+			class Result: UIViewController {
+			var cardNum:Int = 0
+			var items = [0,1,2,3,4,5,6,7,8,9,10,11] // последовательность карт, которая будет перемешиваться
+			var items_copy = [0,1,2,3,4,5,6,7,8,9,10,11]// для восстановления последовательности
+			var shuffled_items = [Int]()
+
+			@IBOutlet weak var textLable: UILabel!
+
+			@IBOutlet weak var cardImage: UIImageView!
+
+			@IBOutlet weak var nameCard: UILabel!
+			@IBAction func back(_ sender: AnyObject) {
+			dismiss(animated: true, completion: nil) } //возвращение на первое окошко (кнопка смириться)
+
+			override func viewDidLoad() {
+			super.viewDidLoad()
+			for _ in 0..< items.count{ // цикл для рандомной перестановки
+			let rand = Int(arc4random_uniform(UInt32(items.count)))
+			shuffled_items.append(items[rand])
+			items.remove(at: rand)
+			}
+			items = items_copy
+			if shuffled_items[cardNum] == 0 { //сопоставление номера карты и результата
+			cardImage.image = UIImage(named:"card0")
+			nameCard.text = "Дурак"
+			textLable.text = "Вам предстоит много новых и интересных дел. В личной жизни не помешают романтика и комплементы.
+			Доверяйте инстинктам и верьте в мечты."
+			}
+			if shuffled_items[cardNum] == 1 {
+			cardImage.image = UIImage(named:"card1")
+			nameCard.text = "Маг"
+			textLable.text = "Необходимо проявить свою инициативу, показать логику и благорозумие. Ничего не помешает принять
+			решение. Нужно использовать свои силы и не бояться рисковать."
+			}
+			if shuffled_items[cardNum] == 2 {
+			cardImage.image = UIImage(named:"card2")
+			nameCard.text = "Верховная жрица"
+			textLable.text = "Прислушайтесь к внутреннему голосу и перестаньте искать оправдания. Обязательно проявляйте
+			доброту к окружающим."
+			}
+			if shuffled_items[cardNum] == 3 {
+			cardImage.image = UIImage(named:"card3")
+			nameCard.text = "Императрица"
+			textLable.text = "Сегодня вас ждет увлекательный день. Позабытые обстоятельства начнут бурно развиваться.
+			Вас ожидает успех, а все потому что интуиция ведет вас в правильном направлении."
+			}
+			//остальные сравнения происходят аналогично
+			}
+		</pre>
+
+		<img src="images/assets.png" alt="cards" class="image-result">
+
+		<div class="text-work">
+			<b>Assets.xcassets.</b> Модуль, в котором хранятся картинки.
+		</div>
+		<div class="text-work">
+			<b>Main.storyboard.</b> Дизайнер приложения.
+			<br>
+			Приложение запускается на iPhone 5s.
+		</div>
+	</section>
+
+	<section class="results">
+		<h4 class="fo-head">Результаты</h4>
+
+		<div class="result-div"><b>Стартовое окно приложения</b></div>
+		<img src="images/1.png" alt="cards" class="image-result">
+		<div class="result-div"><b>Выбор карты</b></div>
+		<img src="images/2.png" alt="cards" class="image-result">
+		<div class="result-div"><b>Окно с результатом выбора</b></div>
+		<img src="images/3.png" alt="cards" class="image-result">
+
+		<div class="result-div">
+		<b>Вывод.</b> В ходе выполнения лабораторной работы была создана программа iFortune, представляющая собой многооконное приложение под iOS, использующее элементы управления и обработки событий. Осуществляется переход между окнами и передача данных</div>
+		<br>
+		<div class="result-div">
+			<b>Ссылка на проект:</b>
+			<a href="#" class="git">githab.com.sdfkjalskdflk</a>
+		</div>
+	</section>
+	<br>
+	<section class="worked">
+		<div class="result-div">
+			<b>Работу выполнили:</b><br>
+			студенты 4 курса<br>
+			группы МС-3<br>
+			Давыдюк Л.И.<br>
+			Другак Ю.А.<br>
+			Борисовец Д.М.<br>
+		</div><br>
+		<div class="result-div">
+			<b>Проверил:</b><br>
+			Лапич С.В.<br>
+		</div><br>
+
+
+		<div class="result-div-end">
+			Брест, 2021
+		</div>
+	</section>
+
+	<img src="images/cat2.png" alt="catic" class="cat2">
+
+
+</body>
+</html>

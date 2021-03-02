@@ -1,0 +1,75 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, sans-serif;
+	color: #f7f2f2;
+	text-align: center;
+	background: linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)), url(../images/sky.jpg);
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+section img	{
+	border-radius: 60px;
+}
+pre {
+	text-align: left;
+	font-size: 16px;
+}
+
+header {
+	text-align: center;
+}
+
+.goal, .text-menu, .elem-div, .text-principe, .text-work, .theory, .result-div {
+	width: 80%;
+	text-align: left;
+	font-size: 20px;
+	position: relative;
+	margin-left: 50%;
+	transform: translate(-50%, 0);
+}
+
+.fo-head {
+	text-align: center;
+	font-size: 25px;
+}
+
+.image-result {
+	height: 500px;
+	padding: 20px;
+}
+
+.result-div-end {
+	padding: 20px;
+	text-align: center;
+	font-size: 18px;
+}
+
+.cat3  {
+	display: block;
+	position: absolute;
+	max-height: 250px;
+	margin-left: 50px;
+}
+
+.cat1 {
+	display: block;
+	position: absolute;
+	max-height: 250px;
+	margin-top: 90vh;
+	margin-left: 60%;
+	min-height: 400px;
+}
+
+.cat2 {
+	display: block;
+	position: relative;
+	max-height: 300px;
+	margin-top: -300px;
+	margin-left: 500px;
+}
+
+.git {
+	color: #fff;
+	font-weight: 200;
+}
